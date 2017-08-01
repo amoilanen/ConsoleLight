@@ -1,0 +1,36 @@
+{
+  "name": "consolelight",
+  "version": "0.0.1",
+  "description": "Console for JavaScript evaluation",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test",
+    "src": "src"
+  },
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antivanov/ConsoleLight.git"
+  },
+  "author": "Anton Ivanov <anton.al.ivanov@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/antivanov/ConsoleLight/issues"
+  },
+  "homepage": "https://github.com/antivanov/ConsoleLight#readme",
+  "dependencies": {
+    "hyperapp": "^0.10.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.4.1"
+  }
+}

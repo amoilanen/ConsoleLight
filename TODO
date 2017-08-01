@@ -1,0 +1,13 @@
+- JavaScript expression can be evaluated, result is printed
+- Object and arrays are printed in the console as well
+- Console can be cleared
+- Console context can be cleared
+- Code is highlighted and formatted (CodeMirror)
+- Console evaluation results can be persisted to local storage and retrieved back when restarted
+- Make into a plugin for Chrome
+- Make into a plugin for Firefox
+
+Infrastructure:
+- Setup unit testing
+- Code linting
+- Split Webpack configuration into separate files
