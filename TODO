@@ -1,8 +1,14 @@
 - JavaScript expression can be evaluated, result is printed
+  -- undefined, null
 - Object and arrays are printed in the console as well
+- Previous console evaluation results are stored and displayed still when a new result is shown
+  -- When too many results, a scrollbar is shown
 - Console can be cleared
 - Console context can be cleared
+- Code windowcan be resized
+- Nice styling of the console like Konsole terminal in KDE
 - Code is highlighted and formatted (CodeMirror)
+  -- Highlight code errors if it is malformed?
 - Console evaluation results can be persisted to local storage and retrieved back when restarted
 - Make into a plugin for Chrome
 - Make into a plugin for Firefox
@@ -11,3 +17,5 @@ Infrastructure:
 - Setup unit testing
 - Code linting
 - Split Webpack configuration into separate files
+- Webpack devserver
+- Use Typescript with the project?

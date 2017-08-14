@@ -23,14 +23,14 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [ 'es2015' ],
             plugins: [
               [
-                "transform-react-jsx",
+                'transform-react-jsx',
                 {
-                  "pragma": "h"
+                  'pragma': 'h'
                 }
               ]
             ]
