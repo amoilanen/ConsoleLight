@@ -2,7 +2,7 @@ import { h, app } from 'hyperapp';
 import 'app.css';
 
 const SingleEvaluationResult = ({ value }) =>
-  <p class="single-evaluation-result">{"" + value}</p>
+  <p class="single-evaluation-result">{"" + JSON.stringify(value, null, 2)}</p>
 
 const EvaluationResults = ({ evaluationResults }) =>
   <section class="evaluation-results">
@@ -15,23 +15,21 @@ app({
     evaluationResults: []
   },
   view: (state, actions) => 
-    (<div>
+    (<section class="app-container">
       <section class="editing-area">
         <textarea onkeyup={actions.updateCode}>{state.codeToEvaluate}</textarea>
+        <button class="editor-button" onclick={actions.evaluate}>Evaluate</button>
       </section>
-      <button onclick={actions.evaluate}>Evaluate</button>
-      <section class="evaluation-results">
-        <EvaluationResults evaluationResults={state.evaluationResults} />
-      </section>
-    </div>),
+      <EvaluationResults evaluationResults={state.evaluationResults} />
+    </section>),
   actions: {
     evaluate: state => {
       const { codeToEvaluate, evaluationResults } = state;
-      const currentEvaluationResult = eval(codeToEvaluate);
+      const currentEvaluationResult = eval(`(${codeToEvaluate})`);
 
       return {
         codeToEvaluate,
-        evaluationResults: evaluationResults.concat(currentEvaluationResult)
+        evaluationResults: evaluationResults.concat([currentEvaluationResult])
       };
     },
     updateCode: (state, actions, event) => {
