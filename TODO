@@ -14,8 +14,8 @@
 - Make into a plugin for Firefox
 
 Infrastructure:
+- Webpack devserver
 - Setup unit testing
 - Code linting
 - Split Webpack configuration into separate files
-- Webpack devserver
 - Use Typescript with the project?
