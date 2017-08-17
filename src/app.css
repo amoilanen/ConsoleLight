@@ -12,3 +12,7 @@ button {
   width: 100px;
   height: 20px;
 }
+
+.single-evaluation-result:before {
+  content: '> ';
+}

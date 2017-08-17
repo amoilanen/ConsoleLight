@@ -1,10 +1,18 @@
 import { h, app } from 'hyperapp';
 import 'app.css';
 
+const SingleEvaluationResult = ({ value }) =>
+  <p class="single-evaluation-result">{"" + value}</p>
+
+const EvaluationResults = ({ evaluationResults }) =>
+  <section class="evaluation-results">
+    {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
+  </section>
+
 app({
   state: {
     codeToEvaluate: '',
-    evaluationResult: null
+    evaluationResults: []
   },
   view: (state, actions) => 
     (<div>
@@ -13,16 +21,17 @@ app({
       </section>
       <button onclick={actions.evaluate}>Evaluate</button>
       <section class="evaluation-results">
-        <span>{state.evaluationResult}</span>
+        <EvaluationResults evaluationResults={state.evaluationResults} />
       </section>
     </div>),
   actions: {
     evaluate: state => {
-      const { codeToEvaluate, evaluationResult } = state;
+      const { codeToEvaluate, evaluationResults } = state;
+      const currentEvaluationResult = eval(codeToEvaluate);
 
       return {
         codeToEvaluate,
-        evaluationResult: eval(codeToEvaluate)
+        evaluationResults: evaluationResults.concat(currentEvaluationResult)
       };
     },
     updateCode: (state, actions, event) => {
