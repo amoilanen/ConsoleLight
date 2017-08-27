@@ -9,15 +9,15 @@
   bottom: 0;
 }
 
+.CodeMirror {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
 .editing-area {
   width: 100%;
   height: 20%;
   min-height: 20rem;
-}
-
-.editing-area textarea {
-  width: 100%;
-  height: calc(100% - 4rem)
 }
 
 .editor-button {

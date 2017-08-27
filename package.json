@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/antivanov/ConsoleLight#readme",
   "dependencies": {
+    "codemirror": "^5.29.0",
     "hyperapp": "^0.10.1"
   },
   "devDependencies": {

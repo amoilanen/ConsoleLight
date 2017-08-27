@@ -1,5 +1,30 @@
 import { h, app } from 'hyperapp';
+import CodeMirror from 'codemirror';
+import 'codemirror/mode/javascript/javascript';
 import 'app.css';
+import 'codemirror/lib/codemirror.css';
+
+const CodeEditor = ({code, onkeyup}) =>
+  <section class="code-editor">
+    <div
+      onkeyup={onkeyup}
+      oncreate={element => {
+        console.log('element = ', element);
+        const editor = CodeMirror(node => element.appendChild(node))
+
+        editor.setOption('mode', 'javascript');
+        editor.setOption('value', code);
+        editor.setOption('lineNumbers', true);
+        editor.setOption('matchBrackets', true);
+        editor.setOption('continueComments', 'Enter')
+        editor.setOption('extraKeys', {"Ctrl-Q": "toggleComment"});
+        element.editor = editor;
+      }}
+      onupdate={element => {
+        element.editor.setOption('value', code);
+      }}>
+    </div>
+  </section>;
 
 const SingleEvaluationResult = ({ value }) =>
   <p class="single-evaluation-result">{"" + JSON.stringify(value, null, 2)}</p>
@@ -17,7 +42,7 @@ app({
   view: (state, actions) => 
     (<section class="app-container">
       <section class="editing-area">
-        <textarea onkeyup={actions.updateCode}>{state.codeToEvaluate}</textarea>
+        <CodeEditor code={state.codeToEvaluate} onkeyup={actions.updateCode}></CodeEditor>
         <button class="editor-button" onclick={actions.evaluate}>Evaluate</button>
       </section>
       <EvaluationResults evaluationResults={state.evaluationResults} />
