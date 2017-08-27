@@ -4,20 +4,31 @@ import 'codemirror/mode/javascript/javascript';
 import 'app.css';
 import 'codemirror/lib/codemirror.css';
 
+const editorDefaultOptions = {
+  mode: 'javascript',
+  lineNumbers: true,
+  matchBrackets: true,
+  continueComments: 'Enter',
+  extraKeys: {'Ctrl-Q': 'toggleComment'}
+};
+
+const setOptions = (editor, options) =>
+  Object.keys(options).forEach(optionKey => {
+    const optionValue = options[optionKey];
+
+    editor.setOption(optionKey, optionValue);
+  });
+
 const CodeEditor = ({code, onkeyup}) =>
   <section class="code-editor">
     <div
       onkeyup={onkeyup}
       oncreate={element => {
-        console.log('element = ', element);
         const editor = CodeMirror(node => element.appendChild(node))
 
-        editor.setOption('mode', 'javascript');
-        editor.setOption('value', code);
-        editor.setOption('lineNumbers', true);
-        editor.setOption('matchBrackets', true);
-        editor.setOption('continueComments', 'Enter')
-        editor.setOption('extraKeys', {"Ctrl-Q": "toggleComment"});
+        setOptions(editor, Object.assign({}, editorDefaultOptions, {
+          'value': code
+        }));
         element.editor = editor;
       }}
       onupdate={element => {
