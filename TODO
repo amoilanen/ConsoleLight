@@ -31,3 +31,4 @@ Infrastructure:
 - Code linting
 - Split Webpack configuration into separate files
 - Use Typescript with the project?
+- "Production" build without a source map, minified

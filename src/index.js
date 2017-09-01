@@ -30,6 +30,7 @@ const CodeEditor = ({code, onkeyup}) =>
           'value': code
         }));
         element.editor = editor;
+        element.querySelector('textarea').editor = editor;
       }}
       onupdate={element => {
         element.editor.setOption('value', code);
@@ -61,18 +62,25 @@ app({
   actions: {
     evaluate: state => {
       const { codeToEvaluate, evaluationResults } = state;
-      const currentEvaluationResult = eval(`(${codeToEvaluate})`);
 
-      return {
-        codeToEvaluate,
-        evaluationResults: evaluationResults.concat([currentEvaluationResult])
-      };
+      try {
+        const currentEvaluationResult = eval(`${codeToEvaluate}`);
+
+        return {
+          codeToEvaluate,
+          evaluationResults: evaluationResults.concat([currentEvaluationResult])
+        };
+      } catch (e) {
+        console.log(e);
+      }
     },
     updateCode: (state, actions, event) => {
       const { codeToEvaluate, evaluationResult } = state;
+      const editor = event.target.editor;
+      const newCodeToEvaluate = editor.getValue();
 
       return {
-        codeToEvaluate: event.target.value,
+        codeToEvaluate: newCodeToEvaluate,
         evaluationResult
       }
     }
