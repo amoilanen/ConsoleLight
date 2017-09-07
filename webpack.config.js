@@ -26,6 +26,10 @@ module.exports = {
         use: [ 'style-loader', 'css-loader' ]
       },
       {
+        test: /\.(ttf|eot|svg|woff)$/,
+        use: 'file-loader'
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {

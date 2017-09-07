@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Hack';
+  src: url('../fonts/Hack-Regular.ttf');
+}
+
 .app-container {
   padding: 0.5rem;
   display: flex;
@@ -7,11 +12,26 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #073642;
+  font-family: 'Hack';
 }
 
 .CodeMirror {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
+}
+
+.CodeMirror pre.CodeMirror-line  {
+  font-family: 'Hack';
+  font-size: 16px;
+}
+
+.CodeMirror-scroll {
+  background-color: #eee8d5;
+}
+
+.CodeMirror-gutter {
+  background-color: #fdf6e3;
 }
 
 .editing-area {
@@ -26,10 +46,33 @@
 }
 
 .evaluation-results {
+  height: 80%;
   max-height: 80%;
   overflow-y: auto;
 }
 
 .single-evaluation-result:before {
   content: '> ';
+}
+
+.single-evaluation-result {
+  color: #b58900;
+}
+
+/*
+ * Solarized color scheme taken from https://github.com/altercation/solarized
+ */
+div.non-existing-class {
+  background-color: #002b36;
+  background-color: #002b36;
+  background-color: #657b83;
+  background-color: #839496;
+  background-color: #93a1a1;
+  background-color: #cb4b16;
+  background-color: #d30102;
+  background-color: #dc322f;
+  background-color: #6c71c4;
+  background-color: #268bd2;
+  background-color: #2aa198;
+  background-color: #586e75;
 }

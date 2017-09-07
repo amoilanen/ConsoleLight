@@ -46,6 +46,18 @@ const EvaluationResults = ({ evaluationResults }) =>
     {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
   </section>
 
+const evaluateJsCode = code => {
+  try {
+    return eval(code);
+  } catch (e) {
+    try {
+      return eval(`(${code})`);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
+
 app({
   state: {
     codeToEvaluate: '',
@@ -62,17 +74,12 @@ app({
   actions: {
     evaluate: state => {
       const { codeToEvaluate, evaluationResults } = state;
+      const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
 
-      try {
-        const currentEvaluationResult = eval(`${codeToEvaluate}`);
-
-        return {
-          codeToEvaluate,
-          evaluationResults: evaluationResults.concat([currentEvaluationResult])
-        };
-      } catch (e) {
-        console.log(e);
-      }
+      return {
+        codeToEvaluate,
+        evaluationResults: evaluationResults.concat([currentEvaluationResult])
+      };
     },
     updateCode: (state, actions, event) => {
       const { codeToEvaluate, evaluationResult } = state;
