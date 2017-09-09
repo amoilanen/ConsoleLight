@@ -16,6 +16,15 @@
   font-family: 'Hack';
 }
 
+.code-editor {
+  height: calc(100% - 2.5rem);
+}
+
+.code-editor > div,
+.CodeMirror.cm-s-default {
+  height: 100%;
+}
+
 .CodeMirror {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
@@ -38,6 +47,17 @@
   width: 100%;
   height: 20%;
   min-height: 20rem;
+  position: relative;
+}
+
+.editing-area-buttons {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.editing-area-buttons .button {
+  float: left;
 }
 
 .editor-button {
@@ -57,17 +77,31 @@
 
 .single-evaluation-result {
   color: #b58900;
+  margin: 0;
 }
 
 .button {
   display: inline-block;
-  background-color: #93a1a1;
   cursor: pointer;
-  border: 1px #657b83;
   border-radius: 0.25rem;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
+}
+
+.button--tooltip-shown:after {
+  content: attr(tooltip);
+  background-color: #fdf6e3;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  position: absolute;
+  opacity: 0.8;
+  left: 2.0rem;
+  top: 2.0rem;
 }
 
 .button:active {
+  border: 1px #657b83;
   transform: translate(0.05rem, 0.05rem);
 }
 
@@ -76,17 +110,7 @@
 }
 
 .button-icon {
-  width: 2rem;
-  height: 2rem;
-  float: left;
-}
-
-.button-icon-run {
-  background: url('../icons/fi-play.svg') no-repeat;
-  background-size: 100% 100%;
-}
-
-.button-icon svg {
+  font-size: 1.8rem;
   color: #93a1a1;
 }
 

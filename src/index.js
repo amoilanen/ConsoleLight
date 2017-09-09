@@ -3,6 +3,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript';
 import 'app.css';
 import 'codemirror/lib/codemirror.css';
+import 'foundation-icons.css';
 
 const editorDefaultOptions = {
   mode: 'javascript',
@@ -46,10 +47,45 @@ const EvaluationResults = ({ evaluationResults }) =>
     {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
   </section>
 
-const Button = ({ iconName, tooltip, onclick }) =>
-  <span class="button" alt={tooltip} onclick={onclick}>
-    <span class={`button-icon button-icon-${iconName}`}></span>
-  </span>
+const Button = ({ iconName, tooltip, onclick }) => {
+
+  const TOOLTIP_DELAY_MS = 500;
+
+  const state = {};
+
+  const onMouseEnterListener = event => {
+    const element = event.target;
+
+    state.shouldShowTooltip = true;
+    setTimeout(() => {
+      if (state.shouldShowTooltip) {
+        element.classList.add('button--tooltip-shown');
+      }
+    }, TOOLTIP_DELAY_MS);
+  };
+
+  const onMouseLeaveListener = event => {
+    const element = event.target;
+    state.shouldShowTooltip = false;
+    element.classList.remove('button--tooltip-shown');
+  };
+
+  const addTooltipListeners = element => {
+    element.addEventListener('mouseenter', onMouseEnterListener);
+    element.addEventListener('mouseleave', onMouseLeaveListener);
+  };
+
+  const removeTooltipListeners = element => {
+    element.removeEventListener('mouseenter', onMouseEnterListener);
+    element.removeEventListener('mouseleave', onMouseLeaveListener);
+  };
+
+  return (<span class="button" tooltip={tooltip} onclick={onclick} oncreate={addTooltipListeners} onremove={removeTooltipListeners}>
+    <span class={`button-icon button-icon-${iconName}`}>
+      <i class={`fi-${iconName}`}></i>
+    </span>
+  </span>);
+};
 
 const evaluateJsCode = code => {
   try {
@@ -72,7 +108,9 @@ app({
     (<section class="app-container">
       <section class="editing-area">
         <CodeEditor code={state.codeToEvaluate} onkeyup={actions.updateCode}></CodeEditor>
-        <Button iconName="run" tooltip="Run" onclick={actions.evaluate}></Button>
+        <section class="editing-area-buttons">
+          <Button iconName="play" tooltip="Run" onclick={actions.evaluate}></Button>
+        </section>
       </section>
       <EvaluationResults evaluationResults={state.evaluationResults} />
     </section>),
