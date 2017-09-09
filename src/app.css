@@ -59,6 +59,37 @@
   color: #b58900;
 }
 
+.button {
+  display: inline-block;
+  background-color: #93a1a1;
+  cursor: pointer;
+  border: 1px #657b83;
+  border-radius: 0.25rem;
+}
+
+.button:active {
+  transform: translate(0.05rem, 0.05rem);
+}
+
+.button:hover {
+  background-color: #657b83;
+}
+
+.button-icon {
+  width: 2rem;
+  height: 2rem;
+  float: left;
+}
+
+.button-icon-run {
+  background: url('../icons/fi-play.svg') no-repeat;
+  background-size: 100% 100%;
+}
+
+.button-icon svg {
+  color: #93a1a1;
+}
+
 /*
  * Solarized color scheme taken from https://github.com/altercation/solarized
  */

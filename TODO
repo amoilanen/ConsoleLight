@@ -24,6 +24,8 @@
 - "History" button for editor that will show the history of evaluated commands
   -- History can be cleared
 
+- Code evaluation history is stored and can be accessed: last 10 snippets? all snippets? search snippet history?
+
 - Make into a plugin for Chrome
 - Make into a plugin for Firefox
 

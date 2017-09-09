@@ -46,6 +46,11 @@ const EvaluationResults = ({ evaluationResults }) =>
     {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
   </section>
 
+const Button = ({ iconName, tooltip, onclick }) =>
+  <span class="button" alt={tooltip} onclick={onclick}>
+    <span class={`button-icon button-icon-${iconName}`}></span>
+  </span>
+
 const evaluateJsCode = code => {
   try {
     return eval(code);
@@ -67,7 +72,7 @@ app({
     (<section class="app-container">
       <section class="editing-area">
         <CodeEditor code={state.codeToEvaluate} onkeyup={actions.updateCode}></CodeEditor>
-        <button class="editor-button" onclick={actions.evaluate}>Evaluate</button>
+        <Button iconName="run" tooltip="Run" onclick={actions.evaluate}></Button>
       </section>
       <EvaluationResults evaluationResults={state.evaluationResults} />
     </section>),
