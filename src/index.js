@@ -42,10 +42,22 @@ const CodeEditor = ({code, onkeyup}) =>
 const SingleEvaluationResult = ({ value }) =>
   <p class="single-evaluation-result">{"" + JSON.stringify(value, null, 2)}</p>
 
-const EvaluationResults = ({ evaluationResults }) =>
-  <section class="evaluation-results">
+const EvaluationResults = ({ evaluationResults }) => {
+
+  const scrollToBottom = element => {
+    setTimeout(() => {
+      element.scrollTop = element.scrollHeight;
+    }, 100);
+  };
+
+  return (<section
+    class="evaluation-results"
+    updateWhenChanges={evaluationResults.length}
+    onupdate={scrollToBottom}
+    >
     {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
-  </section>
+  </section>);
+};
 
 const Button = ({ iconName, tooltip, onclick }) => {
 
