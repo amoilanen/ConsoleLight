@@ -111,7 +111,7 @@ const evaluateJsCode = code => {
   }
 };
 
-app({
+const emit = app({
   state: {
     codeToEvaluate: '',
     evaluationResults: []
@@ -127,24 +127,39 @@ app({
       <EvaluationResults evaluationResults={state.evaluationResults} />
     </section>),
   actions: {
-    evaluate: state => {
-      const { codeToEvaluate, evaluationResults } = state;
-      const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
+    evaluate: (state, actions) => {
+      const { evaluationResults, codeToEvaluate } = state;
+      const currentEvaluationResult = evaluateJsCode(codeToEvaluate); //What if state is updated here?
 
-      return {
-        codeToEvaluate,
-        evaluationResults: evaluationResults.concat([currentEvaluationResult])
-      };
+      actions.log(currentEvaluationResult);
     },
     updateCode: (state, actions, event) => {
-      const { codeToEvaluate, evaluationResult } = state;
+      const { codeToEvaluate } = state;
       const editor = event.target.editor;
       const newCodeToEvaluate = editor.getValue();
 
       return {
-        codeToEvaluate: newCodeToEvaluate,
-        evaluationResult
-      }
+        codeToEvaluate: newCodeToEvaluate
+      };
+    },
+    log: (state, actions, data) => {
+      const { evaluationResults } = state;
+
+      return {
+        evaluationResults: evaluationResults.slice().concat([data])
+      };
+    }
+  },
+  events: {
+    log: (state, actions, data) => {
+      actions.log(data);
     }
   }
 });
+
+window.console = {
+
+  log(arg) {
+    emit('log', arg);
+  }
+}
