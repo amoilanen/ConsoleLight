@@ -48,10 +48,22 @@ const CodeEditor = ({code, onkeyup}) =>
 
 const SingleEvaluationResult = ({ value }) => {
   const { level, data } = value;
-  const formattedData = "" + JSON.stringify(data, null, 2);
+
+  let formattedDataLines;
+
+  if (typeof data === 'string') {
+    formattedDataLines = data.split('\n');
+  } else if (Object.prototype.toString.call(data) === '[object Array]') {
+    formattedDataLines = [`[ ${data.join(', ')} ]`];
+  } else {
+    formattedDataLines = ['' + JSON.stringify(data, null, 2)];
+  }
+
   const className = `single-evaluation-result single-evaluation-result-${level}`;
 
-  return (<p class={className}>{formattedData}</p>);
+  return (<p class={className}>{formattedDataLines.map(formattedDataLine =>
+      <pre>{formattedDataLine}</pre>
+    )}</p>);
 };
 
 const EvaluationResults = ({ evaluationResults }) => {
@@ -114,11 +126,11 @@ const Button = ({ iconName, tooltip, onclick }) => {
 const evaluateJsCode = code => {
   try {
     return eval(code);
-  } catch (e) {
+  } catch (error) {
     try {
       return eval(`(${code})`);
-    } catch (e) {
-      console.log(e);
+    } catch (errorAsExpression) {
+      throw error;
     }
   }
 };
@@ -141,11 +153,19 @@ const emit = app({
   actions: {
     evaluate: (state, actions) => {
       const { evaluationResults, codeToEvaluate } = state;
-      const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
 
-      actions.log({
-        data: currentEvaluationResult
-      });
+      try {
+        const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
+
+        actions.log({
+          data: currentEvaluationResult
+        });
+      } catch (evaluationError) {
+        actions.log({
+          level: LogLevel.ERROR,
+          data: evaluationError.stack
+        });
+      }
     },
     updateCode: (state, actions, event) => {
       const { codeToEvaluate } = state;

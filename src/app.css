@@ -73,6 +73,7 @@
 
 .single-evaluation-result:before {
   content: '>';
+  float: left;
   font-family: "foundation-icons";
   font-style: normal;
   font-weight: normal;
@@ -80,7 +81,6 @@
   text-transform: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  display: inline-block;
   text-decoration: inherit;
   margin-right: 0.4rem;
 }
@@ -88,6 +88,7 @@
 .single-evaluation-result {
   color: #b58900;
   margin: 0;
+  margin-bottom: 0.4rem;
 }
 
 .single-evaluation-result-info {
@@ -112,6 +113,11 @@
 
 .single-evaluation-result-error:before {
   content: "> \F175"; /* .fi-minus-circle */
+}
+
+.single-evaluation-result pre {
+  margin: 0;
+  font-family: 'Hack';
 }
 
 .button {
