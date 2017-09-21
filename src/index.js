@@ -5,6 +5,13 @@ import 'app.css';
 import 'codemirror/lib/codemirror.css';
 import 'foundation-icons.css';
 
+const LogLevel = {
+  LOG: 'log',
+  INFO: 'info',
+  WARN: 'warn',
+  ERROR: 'error'
+};
+
 const editorDefaultOptions = {
   mode: 'javascript',
   lineNumbers: true,
@@ -39,8 +46,13 @@ const CodeEditor = ({code, onkeyup}) =>
     </div>
   </section>;
 
-const SingleEvaluationResult = ({ value }) =>
-  <p class="single-evaluation-result">{"" + JSON.stringify(value, null, 2)}</p>
+const SingleEvaluationResult = ({ value }) => {
+  const { level, data } = value;
+  const formattedData = "" + JSON.stringify(data, null, 2);
+  const className = `single-evaluation-result single-evaluation-result-${level}`;
+
+  return (<p class={className}>{formattedData}</p>);
+};
 
 const EvaluationResults = ({ evaluationResults }) => {
 
@@ -129,9 +141,11 @@ const emit = app({
   actions: {
     evaluate: (state, actions) => {
       const { evaluationResults, codeToEvaluate } = state;
-      const currentEvaluationResult = evaluateJsCode(codeToEvaluate); //What if state is updated here?
+      const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
 
-      actions.log(currentEvaluationResult);
+      actions.log({
+        data: currentEvaluationResult
+      });
     },
     updateCode: (state, actions, event) => {
       const { codeToEvaluate } = state;
@@ -142,24 +156,47 @@ const emit = app({
         codeToEvaluate: newCodeToEvaluate
       };
     },
-    log: (state, actions, data) => {
+    log: (state, actions, {level = LogLevel.LOG, data}) => {
       const { evaluationResults } = state;
 
       return {
-        evaluationResults: evaluationResults.slice().concat([data])
+        evaluationResults: evaluationResults.slice().concat([{
+          level,
+          data
+        }])
       };
     }
   },
   events: {
-    log: (state, actions, data) => {
-      actions.log(data);
+    log: (state, actions, {level, data}) => {
+      actions.log({level, data});
     }
   }
 });
 
 window.console = {
-
   log(arg) {
-    emit('log', arg);
+    emit('log', {
+      level: LogLevel.LOG,
+      data: arg
+    });
+  },
+  error(arg) {
+    emit('log', {
+      level: LogLevel.ERROR,
+      data: arg
+    });
+  },
+  warn(arg) {
+    emit('log', {
+      level: LogLevel.WARN,
+      data: arg
+    });
+  },
+  info(arg) {
+    emit('log', {
+      level: LogLevel.INFO,
+      data: arg
+    });
   }
-}
+};

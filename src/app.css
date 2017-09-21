@@ -72,12 +72,46 @@
 }
 
 .single-evaluation-result:before {
-  content: '> ';
+  content: '>';
+  font-family: "foundation-icons";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  text-decoration: inherit;
+  margin-right: 0.4rem;
 }
 
 .single-evaluation-result {
   color: #b58900;
   margin: 0;
+}
+
+.single-evaluation-result-info {
+  color: #268bd2;
+}
+
+.single-evaluation-result-info:before {
+  content: "> \F15E"; /* .fi-info */
+}
+
+.single-evaluation-result-warn {
+  color: #cb4b16;
+}
+
+.single-evaluation-result-warn:before {
+  content: "> \F101"; /* .fi-alert */
+}
+
+.single-evaluation-result-error {
+  color: #d30102;
+}
+
+.single-evaluation-result-error:before {
+  content: "> \F175"; /* .fi-minus-circle */
 }
 
 .button {
