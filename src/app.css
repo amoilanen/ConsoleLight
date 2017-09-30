@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Hack';
-  src: url('../fonts/Hack-Regular.ttf');
+  src: url('../node_modules/hack-font/build/ttf/Hack-Regular.ttf');
 }
 
 .app-container {
@@ -14,33 +14,6 @@
   bottom: 0;
   background-color: #073642;
   font-family: 'Hack';
-}
-
-.code-editor {
-  height: calc(100% - 2.5rem);
-}
-
-.code-editor > div,
-.CodeMirror.cm-s-default {
-  height: 100%;
-}
-
-.CodeMirror {
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-.CodeMirror pre.CodeMirror-line  {
-  font-family: 'Hack';
-  font-size: 16px;
-}
-
-.CodeMirror-scroll {
-  background-color: #eee8d5;
-}
-
-.CodeMirror-gutter {
-  background-color: #fdf6e3;
 }
 
 .editing-area {

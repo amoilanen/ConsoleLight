@@ -24,6 +24,8 @@
   "homepage": "https://github.com/antivanov/ConsoleLight#readme",
   "dependencies": {
     "codemirror": "^5.29.0",
+    "foundation-icons": "^1.0.1",
+    "hack-font": "^2.0.19",
     "hyperapp": "^0.10.1"
   },
   "devDependencies": {

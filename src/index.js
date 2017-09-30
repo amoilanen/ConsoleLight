@@ -1,6 +1,6 @@
 import { h, app } from 'hyperapp';
 import 'app.css';
-import 'foundation-icons.css';
+import 'foundation-icons/foundation-icons.css';
 import CodeEditor from 'editor';
 
 const LogLevel = {
