@@ -8,6 +8,8 @@
   -- Object should be printed as a collapsible tree? Do not use JSON formatting. Leafs are arrays or primitive types.
   -- Errors are displayed in red
 
+- Bug: document.querySelector('textarea') results in "TypeError: Converting circular structure to JSON"
+
 - Code is highlighted and formatted (CodeMirror)
   -- Highlight also code errors if it is malformed? Does CodeMirror support this?
 - Console evaluation results can be persisted to local storage and retrieved back when restarted

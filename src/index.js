@@ -2,13 +2,8 @@ import { h, app } from 'hyperapp';
 import 'app.css';
 import 'foundation-icons/foundation-icons.css';
 import CodeEditor from 'editor';
-
-const LogLevel = {
-  LOG: 'log',
-  INFO: 'info',
-  WARN: 'warn',
-  ERROR: 'error'
-};
+import Button from 'widgets/button';
+import { LogLevel, default as Logger }from 'logger';
 
 const SingleEvaluationResult = ({ value }) => {
   const { level, data } = value;
@@ -45,46 +40,6 @@ const EvaluationResults = ({ evaluationResults }) => {
     >
     {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
   </section>);
-};
-
-const Button = ({ iconName, tooltip, onclick }) => {
-
-  const TOOLTIP_DELAY_MS = 500;
-
-  const state = {};
-
-  const onMouseEnterListener = event => {
-    const element = event.target;
-
-    state.shouldShowTooltip = true;
-    setTimeout(() => {
-      if (state.shouldShowTooltip) {
-        element.classList.add('button--tooltip-shown');
-      }
-    }, TOOLTIP_DELAY_MS);
-  };
-
-  const onMouseLeaveListener = event => {
-    const element = event.target;
-    state.shouldShowTooltip = false;
-    element.classList.remove('button--tooltip-shown');
-  };
-
-  const addTooltipListeners = element => {
-    element.addEventListener('mouseenter', onMouseEnterListener);
-    element.addEventListener('mouseleave', onMouseLeaveListener);
-  };
-
-  const removeTooltipListeners = element => {
-    element.removeEventListener('mouseenter', onMouseEnterListener);
-    element.removeEventListener('mouseleave', onMouseLeaveListener);
-  };
-
-  return (<span class="button" tooltip={tooltip} onclick={onclick} oncreate={addTooltipListeners} onremove={removeTooltipListeners}>
-    <span class={`button-icon button-icon-${iconName}`}>
-      <i class={`fi-${iconName}`}></i>
-    </span>
-  </span>);
 };
 
 const evaluateJsCode = code => {
@@ -132,12 +87,11 @@ const emit = app({
       }
     },
     updateCode: (state, actions, event) => {
-      const { codeToEvaluate } = state;
       const editor = event.target.editor;
-      const newCodeToEvaluate = editor.getValue();
+      const codeToEvaluate = editor.getValue();
 
       return {
-        codeToEvaluate: newCodeToEvaluate
+        codeToEvaluate
       };
     },
     log: (state, actions, {level = LogLevel.LOG, data}) => {
@@ -158,29 +112,4 @@ const emit = app({
   }
 });
 
-window.console = {
-  log(arg) {
-    emit('log', {
-      level: LogLevel.LOG,
-      data: arg
-    });
-  },
-  error(arg) {
-    emit('log', {
-      level: LogLevel.ERROR,
-      data: arg
-    });
-  },
-  warn(arg) {
-    emit('log', {
-      level: LogLevel.WARN,
-      data: arg
-    });
-  },
-  info(arg) {
-    emit('log', {
-      level: LogLevel.INFO,
-      data: arg
-    });
-  }
-};
+window.console = new Logger(emit);
