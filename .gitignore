@@ -1,3 +1,6 @@
+.editorconfig
+package-lock.json
+
 # Built files
 dist
 
