@@ -65,6 +65,7 @@ const emit = app({
         <CodeEditor code={state.codeToEvaluate} onkeyup={actions.updateCode}></CodeEditor>
         <section class="editing-area-buttons">
           <Button iconName="play" tooltip="Run" onclick={actions.evaluate}></Button>
+          <Button iconName="prohibited" tooltip="Clear" onclick={actions.clear}></Button>
         </section>
       </section>
       <EvaluationResults evaluationResults={state.evaluationResults} />
@@ -85,6 +86,11 @@ const emit = app({
           data: evaluationError.stack
         });
       }
+    },
+    clear: (state, actions) => {
+      return {
+        evaluationResults: []
+      };
     },
     updateCode: (state, actions, event) => {
       const editor = event.target.editor;
