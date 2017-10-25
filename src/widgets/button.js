@@ -1,5 +1,7 @@
 import { h } from 'hyperapp';
 
+import './button.css';
+
 const Button = ({ iconName, tooltip, onclick }) => {
   const TOOLTIP_DELAY_MS = 500;
 

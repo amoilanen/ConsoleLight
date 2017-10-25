@@ -93,40 +93,6 @@
   font-family: 'Hack';
 }
 
-.button {
-  display: inline-block;
-  cursor: pointer;
-  border-radius: 0.25rem;
-  width: 2rem;
-  height: 2rem;
-  text-align: center;
-}
-
-.button--tooltip-shown:after {
-  content: attr(tooltip);
-  background-color: #fdf6e3;
-  padding: 0.4rem;
-  border-radius: 0.2rem;
-  position: absolute;
-  opacity: 0.8;
-  left: 2.0rem;
-  top: 2.0rem;
-}
-
-.button:active {
-  border: 1px #657b83;
-  transform: translate(0.05rem, 0.05rem);
-}
-
-.button:hover {
-  background-color: #657b83;
-}
-
-.button-icon {
-  font-size: 1.8rem;
-  color: #93a1a1;
-}
-
 /*
  * Solarized color scheme taken from https://github.com/altercation/solarized
  */
