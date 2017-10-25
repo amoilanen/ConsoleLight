@@ -44,10 +44,10 @@ const EvaluationResults = ({ evaluationResults }) => {
 
 const evaluateJsCode = code => {
   try {
-    return eval(code);
+    return eval.call(null, code);
   } catch (error) {
     try {
-      return eval(`(${code})`);
+      return eval.call(null, `(${code})`);
     } catch (errorAsExpression) {
       throw error;
     }
