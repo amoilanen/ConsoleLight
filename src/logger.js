@@ -12,28 +12,28 @@ class Logger {
   }
 
   log(arg) {
-    emit('log', {
+    this.emit('log', {
       level: LogLevel.LOG,
       data: arg
     });
   }
 
   error(arg) {
-    emit('log', {
+    this.emit('log', {
       level: LogLevel.ERROR,
       data: arg
     });
   }
 
   warn(arg) {
-    emit('log', {
+    this.emit('log', {
       level: LogLevel.WARN,
       data: arg
     });
   }
 
   info(arg) {
-    emit('log', {
+    this.emit('log', {
       level: LogLevel.INFO,
       data: arg
     });
