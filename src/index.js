@@ -3,7 +3,7 @@ import 'app.css';
 import 'foundation-icons/foundation-icons.css';
 import CodeEditor from 'editor';
 import Button from 'widgets/button';
-import { LogLevel, default as Logger }from 'logger';
+import { LogLevel, default as Logger } from 'logger';
 
 const SingleEvaluationResult = ({ value }) => {
   const { level, data } = value;
@@ -56,6 +56,25 @@ const evaluateJsCode = code => {
   }
 };
 
+const getGlobalScopeVariables = () =>
+  [].slice.call(Object.keys(window));
+
+const initialGlobalScopeVariables = getGlobalScopeVariables();
+
+const computeNewGlobalScopeVariables = () => {
+  const currentGlobalScopeVariables = getGlobalScopeVariables();
+
+  return currentGlobalScopeVariables.filter(_ => initialGlobalScopeVariables.indexOf(_) < 0);
+};
+
+const removeNewGlobalScopeVariables = () => {
+  const newGlobalScopeVariables = computeNewGlobalScopeVariables();
+
+  newGlobalScopeVariables.forEach(variableName => {
+    delete window[variableName];
+  });
+};
+
 const emit = app({
   state: {
     codeToEvaluate: '',
@@ -79,7 +98,9 @@ const emit = app({
 
       try {
         const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
+        //const newGlobalScopeVariables = computeNewGlobalScopeVariables();
 
+        //console.log(newGlobalScopeVariables);
         actions.log({
           data: currentEvaluationResult
         });
@@ -97,6 +118,7 @@ const emit = app({
     },
     eraseContext: () => {
       evaluationScope = {};
+      removeNewGlobalScopeVariables();
     },
     updateCode: (state, actions, event) => {
       const editor = event.target.editor;
