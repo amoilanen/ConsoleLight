@@ -1,17 +1,15 @@
 - Previous evaluation results can be referenced in subsequent evaluation results
-- Incorrect expressions are highlighted as invalid before being evaluated, error message is shown, 'Evaluate button' is disabled
-
-- Console can be cleared
 - Console context can be cleared
+
+- Incorrect expressions are highlighted as invalid before being evaluated, error message is shown, 'Evaluate button' is disabled
 - Code window can be resized
-- Nice styling of the console like Konsole terminal in KDE
-  -- Object should be printed as a collapsible tree? Do not use JSON formatting. Leafs are arrays or primitive types.
-  -- Errors are displayed in red
+- Object should be printed as a collapsible tree? Do not use JSON formatting. Leafs are arrays or primitive types.
 
 - Bug: document.querySelector('textarea') results in "TypeError: Converting circular structure to JSON"
 
 - Code is highlighted and formatted (CodeMirror)
   -- Highlight also code errors if it is malformed? Does CodeMirror support this?
+
 - Console evaluation results can be persisted to local storage and retrieved back when restarted
 - "Copy" button for editor
 - "Pretty print" button for editor

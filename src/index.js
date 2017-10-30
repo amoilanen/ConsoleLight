@@ -42,12 +42,14 @@ const EvaluationResults = ({ evaluationResults }) => {
   </section>);
 };
 
+let evaluationScope = {};
+
 const evaluateJsCode = code => {
   try {
-    return eval.call(null, code);
+    return eval.call(evaluationScope, code);
   } catch (error) {
     try {
-      return eval.call(null, `(${code})`);
+      return eval.call(evaluationScope, `(${code})`);
     } catch (errorAsExpression) {
       throw error;
     }
@@ -66,6 +68,7 @@ const emit = app({
         <section class="editing-area-buttons">
           <Button iconName="play" tooltip="Run" onclick={actions.evaluate}></Button>
           <Button iconName="prohibited" tooltip="Clear" onclick={actions.clear}></Button>
+          <Button iconName="trash" tooltip="Erase context" onclick={actions.eraseContext}></Button>
         </section>
       </section>
       <EvaluationResults evaluationResults={state.evaluationResults} />
@@ -91,6 +94,9 @@ const emit = app({
       return {
         evaluationResults: []
       };
+    },
+    eraseContext: () => {
+      evaluationScope = {};
     },
     updateCode: (state, actions, event) => {
       const editor = event.target.editor;
