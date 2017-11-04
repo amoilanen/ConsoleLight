@@ -5,7 +5,6 @@ const getDefinedVariableNames = () =>
 export default class Evaluator {
 
   constructor() {
-    this.evaluationScope = {};
     this.initiallyDefinedVariableNames = getDefinedVariableNames();
   }
 
@@ -26,16 +25,15 @@ export default class Evaluator {
   }
 
   eraseContext() {
-    this.evaluationScope = {};
     this.deleteNewVariables();
   }
 
   evaluate(code) {
     try {
-      return eval.call(this.evaluationScope, code);
+      return window.eval(code);
     } catch (error) {
       try {
-        return eval.call(this.evaluationScope, `(${code})`);
+        return window.eval(`(${code})`);
       } catch (errorAsExpression) {
         throw error;
       }
