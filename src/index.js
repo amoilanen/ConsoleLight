@@ -2,8 +2,11 @@ import { h, app } from 'hyperapp';
 import 'app.css';
 import 'foundation-icons/foundation-icons.css';
 import CodeEditor from 'editor';
+import Evaluator from 'evaluator';
 import Button from 'widgets/button';
 import { LogLevel, default as Logger } from 'logger';
+
+const evaluator = new Evaluator();
 
 const SingleEvaluationResult = ({ value }) => {
   const { level, data } = value;
@@ -42,39 +45,6 @@ const EvaluationResults = ({ evaluationResults }) => {
   </section>);
 };
 
-let evaluationScope = {};
-
-const evaluateJsCode = code => {
-  try {
-    return eval.call(evaluationScope, code);
-  } catch (error) {
-    try {
-      return eval.call(evaluationScope, `(${code})`);
-    } catch (errorAsExpression) {
-      throw error;
-    }
-  }
-};
-
-const getGlobalScopeVariables = () =>
-  [].slice.call(Object.keys(window));
-
-const initialGlobalScopeVariables = getGlobalScopeVariables();
-
-const computeNewGlobalScopeVariables = () => {
-  const currentGlobalScopeVariables = getGlobalScopeVariables();
-
-  return currentGlobalScopeVariables.filter(_ => initialGlobalScopeVariables.indexOf(_) < 0);
-};
-
-const removeNewGlobalScopeVariables = () => {
-  const newGlobalScopeVariables = computeNewGlobalScopeVariables();
-
-  newGlobalScopeVariables.forEach(variableName => {
-    delete window[variableName];
-  });
-};
-
 const emit = app({
   state: {
     codeToEvaluate: '',
@@ -97,10 +67,8 @@ const emit = app({
       const { evaluationResults, codeToEvaluate } = state;
 
       try {
-        const currentEvaluationResult = evaluateJsCode(codeToEvaluate);
-        //const newGlobalScopeVariables = computeNewGlobalScopeVariables();
+        const currentEvaluationResult = evaluator.evaluate(codeToEvaluate);
 
-        //console.log(newGlobalScopeVariables);
         actions.log({
           data: currentEvaluationResult
         });
@@ -117,8 +85,7 @@ const emit = app({
       };
     },
     eraseContext: () => {
-      evaluationScope = {};
-      removeNewGlobalScopeVariables();
+      evaluator.eraseContext();
     },
     updateCode: (state, actions, event) => {
       const editor = event.target.editor;
