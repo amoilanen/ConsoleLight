@@ -7,37 +7,47 @@ export const LogLevel = {
 
 class Logger {
 
-  constructor(emit) {
+  constructor(originalConsole, emit) {
+    this.originalConsole = originalConsole;
     this.emit = emit;
   }
 
-  log(arg) {
+  log(...args) {
     this.emit('log', {
       level: LogLevel.LOG,
-      data: arg
+      severalData: args
     });
+    this.originalConsole.log.apply(window, args);
   }
 
-  error(arg) {
+  error(...args) {
     this.emit('log', {
       level: LogLevel.ERROR,
-      data: arg
+      severalData: args
     });
+    this.originalConsole.error.apply(window, args);
   }
 
-  warn(arg) {
+  warn(...args) {
     this.emit('log', {
       level: LogLevel.WARN,
-      data: arg
+      severalData: args
     });
+    this.originalConsole.warn.apply(window, args);
   }
 
-  info(arg) {
+  info(...args) {
     this.emit('log', {
       level: LogLevel.INFO,
-      data: arg
+      severalData: args
     });
+    this.originalConsole.info.apply(window, args);
   }
+}
+
+export const extendBrowserConsole = emit => {
+  const originalConsole = window.console;
+  window.console = new Logger(originalConsole, emit);
 }
 
 export default Logger;

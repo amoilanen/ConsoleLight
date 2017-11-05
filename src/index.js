@@ -4,7 +4,7 @@ import 'foundation-icons/foundation-icons.css';
 import CodeEditor from 'editor';
 import Evaluator from 'evaluator';
 import Button from 'widgets/button';
-import { LogLevel, default as Logger } from 'logger';
+import { LogLevel, extendBrowserConsole } from 'logger';
 
 const evaluator = new Evaluator();
 
@@ -41,7 +41,20 @@ const EvaluationResults = ({ evaluationResults }) => {
     updateWhenChanges={evaluationResults.length}
     onupdate={scrollToBottom}
     >
-    {evaluationResults.map(result => <SingleEvaluationResult value={result} />)}
+    {evaluationResults.map(result => {
+      if (result.severalData) {
+        //TODO: Replace with 'flatMap' called on an array? Or use Lodash?
+        return [].concat.apply([], result.severalData.map(singleData => {
+          const singleResult = {
+            level: result.level,
+            data: singleData
+          };
+          return <SingleEvaluationResult value={singleResult} />;
+        }));
+      } else {
+        return <SingleEvaluationResult value={result} />
+      }
+    })}
   </section>);
 };
 
@@ -95,22 +108,23 @@ const emit = app({
         codeToEvaluate
       };
     },
-    log: (state, actions, {level = LogLevel.LOG, data}) => {
+    log: (state, actions, {level = LogLevel.LOG, data, severalData}) => {
       const { evaluationResults } = state;
 
       return {
         evaluationResults: evaluationResults.slice().concat([{
           level,
-          data
+          data,
+          severalData //TODO: Clean up the implementation, use the same field when there are several arguments and one
         }])
       };
     }
   },
   events: {
-    log: (state, actions, {level, data}) => {
-      actions.log({level, data});
+    log: (state, actions, {level, data, severalData}) => {
+      actions.log({level, data, severalData});
     }
   }
 });
 
-window.console = new Logger(emit);
+extendBrowserConsole(emit);
