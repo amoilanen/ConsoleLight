@@ -1,0 +1,99 @@
+
+//
+1 + 1
+
+//
+"abc"
+
+//
+var obj = {};
+
+//
+[1, 2, 3]
+
+//
+{ key1: 'value1', key2: 'value2', key3: 'value3' }
+
+//
+{
+  key1: 'valuu1',
+  key2: 'value2',
+  key3: 'value3'
+}
+
+//
+["a", "ab", "abc"].map(x => x.length);
+
+
+//List all months
+function listMonths() {
+  var currentDate = new Date();
+  return Array.from(new Array(12), (_, monthIdx) => {
+    currentDate.setMonth(monthIdx);
+    return currentDate.toLocaleString("en-US", {month: "long"})
+  });
+}
+
+listMonths();
+
+//console.log
+console.log(1 + 1);
+console.log("Logging into console works!");
+
+
+//Printing an object
+var obj = {
+  key1: 'value1',
+  key2: 'value2',
+  key3: 'value3'
+};
+
+obj
+
+//Console API
+console.log(2);
+console.info('Info');
+console.warn('Warning');
+console.error('Error');
+
+//Exception is thrown
+throw new Error('This is an error');
+
+//Invalid JavaScript
+var obj = {
+  key1: 'value1'
+  key2: 'value2'
+  key3: 'value3'
+};
+
+
+//Scope
+var x = 1 + 1;
+
+var x = 1;
+
+function listMonths() {
+  var currentDate = new Date();
+  return Array.from(new Array(12), (_, monthIdx) => {
+    currentDate.setMonth(monthIdx);
+    return currentDate.toLocaleString("en-US", {month: "long"})
+  });
+}
+
+const months = listMonths();
+
+months.length
+
+const x = 1;
+
+//Logging with multiple arguments
+
+console.log(1, 2, 3);
+console.log('a', 'b', 'c');
+console.log([1, 2, 3]);
+console.log([1, 2], [3, 4, 5], [6, 7, 8]);
+
+var obj = {
+  key1: 'value1'
+};
+console.log('a', obj, 'c');
