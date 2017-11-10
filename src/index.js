@@ -5,6 +5,7 @@ import CodeEditor from 'editor';
 import Evaluator from 'evaluator';
 import Button from 'widgets/button';
 import { LogLevel, extendBrowserConsole } from 'logger';
+import 'utils/array';
 
 const evaluator = new Evaluator();
 
@@ -41,16 +42,15 @@ const EvaluationResults = ({ evaluationResults }) => {
     updateWhenChanges={evaluationResults.length}
     onupdate={scrollToBottom}
     >
-    {evaluationResults.map(result => {
-      //TODO: Replace with 'flatMap' called on an array? Or use Lodash?
-      return [].concat.apply([], result.data.map(datum => {
+    {evaluationResults.flatMap(result =>
+      result.data.map(datum => {
         const value = {
           level: result.level,
           datum: datum
         };
         return <SingleEvaluationResult value={value} />;
-      }));
-    })}
+      })
+    )}
   </section>);
 };
 
