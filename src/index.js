@@ -9,16 +9,16 @@ import { LogLevel, extendBrowserConsole } from 'logger';
 const evaluator = new Evaluator();
 
 const SingleEvaluationResult = ({ value }) => {
-  const { level, data } = value;
+  const { level, datum } = value;
 
   let formattedDataLines;
 
-  if (typeof data === 'string') {
-    formattedDataLines = data.split('\n');
-  } else if (Object.prototype.toString.call(data) === '[object Array]') {
-    formattedDataLines = [`[ ${data.join(', ')} ]`];
+  if (typeof datum === 'string') {
+    formattedDataLines = datum.split('\n');
+  } else if (Object.prototype.toString.call(datum) === '[object Array]') {
+    formattedDataLines = [`[ ${datum.join(', ')} ]`];
   } else {
-    formattedDataLines = ['' + JSON.stringify(data, null, 2)];
+    formattedDataLines = ['' + JSON.stringify(datum, null, 2)];
   }
 
   const className = `single-evaluation-result single-evaluation-result-${level}`;
@@ -42,18 +42,14 @@ const EvaluationResults = ({ evaluationResults }) => {
     onupdate={scrollToBottom}
     >
     {evaluationResults.map(result => {
-      if (result.severalData) {
-        //TODO: Replace with 'flatMap' called on an array? Or use Lodash?
-        return [].concat.apply([], result.severalData.map(singleData => {
-          const singleResult = {
-            level: result.level,
-            data: singleData
-          };
-          return <SingleEvaluationResult value={singleResult} />;
-        }));
-      } else {
-        return <SingleEvaluationResult value={result} />
-      }
+      //TODO: Replace with 'flatMap' called on an array? Or use Lodash?
+      return [].concat.apply([], result.data.map(datum => {
+        const value = {
+          level: result.level,
+          datum: datum
+        };
+        return <SingleEvaluationResult value={value} />;
+      }));
     })}
   </section>);
 };
@@ -83,12 +79,12 @@ const emit = app({
         const currentEvaluationResult = evaluator.evaluate(codeToEvaluate);
 
         actions.log({
-          data: currentEvaluationResult
+          data: [ currentEvaluationResult ]
         });
       } catch (evaluationError) {
         actions.log({
           level: LogLevel.ERROR,
-          data: evaluationError.stack
+          data: [ evaluationError.stack ]
         });
       }
     },
@@ -108,21 +104,20 @@ const emit = app({
         codeToEvaluate
       };
     },
-    log: (state, actions, {level = LogLevel.LOG, data, severalData}) => {
+    log: (state, actions, {level = LogLevel.LOG, data}) => {
       const { evaluationResults } = state;
 
       return {
         evaluationResults: evaluationResults.slice().concat([{
           level,
-          data,
-          severalData //TODO: Clean up the implementation, use the same field when there are several arguments and one
+          data
         }])
       };
     }
   },
   events: {
-    log: (state, actions, {level, data, severalData}) => {
-      actions.log({level, data, severalData});
+    log: (state, actions, {level, data}) => {
+      actions.log({level, data});
     }
   }
 });
