@@ -1,14 +1,11 @@
-- What if console.log, console.warn, console.info receives more than one argument? Update the code to work
-
-- Incorrect expressions are highlighted as invalid before being evaluated, error message is shown, 'Evaluate button' is disabled
-- Code window can be resized
 - Object should be printed as a collapsible tree? Do not use JSON formatting. Leafs are primitive types.
   Arrays are also printed as trees, at the beginning of the array the length in brackets '()' is printed
+- Do not show the whole error stacktrace, only the collapsed error tree
+
+- Code window can be resized
+- On F11 make the window full size, Esc minimize. Add maximize/minimize buttons?
 
 - Bug: document.querySelector('textarea') results in "TypeError: Converting circular structure to JSON"
-
-- Code is highlighted and formatted (CodeMirror)
-  -- Highlight also code errors if it is malformed? Does CodeMirror support this?
 
 - Console evaluation results can be persisted to local storage and retrieved back when restarted
 - Replaying the stored evaluation sessions? Store just the code snippets themselves?
@@ -28,6 +25,13 @@ Infrastructure:
 - Split Webpack configuration into separate files
 - Use Typescript with the project?
 - "Production" build without a source map, minified
+
+*** Nice to have ***
+
+- Code is highlighted and formatted (CodeMirror)
+  -- Highlight also code errors if it is malformed? Does CodeMirror support this?
+  -- Incorrect expressions are highlighted as invalid before being evaluated, error message is shown, 'Evaluate button' is disabled
+- Optionally integrate ESLint into the editor so that errors are highlighted?
 
 *** Document / Fix ***
 

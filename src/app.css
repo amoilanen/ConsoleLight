@@ -38,13 +38,13 @@
   margin-top: 0.5rem;
 }
 
-.evaluation-results {
+.output {
   height: 80%;
   max-height: 80%;
   overflow-y: auto;
 }
 
-.single-evaluation-result:before {
+.displayed-value:before {
   content: '>';
   float: left;
   font-family: "foundation-icons";
@@ -58,37 +58,37 @@
   margin-right: 0.4rem;
 }
 
-.single-evaluation-result {
+.displayed-value {
   color: #b58900;
   margin: 0;
   margin-bottom: 0.4rem;
 }
 
-.single-evaluation-result-info {
+.displayed-value-info {
   color: #268bd2;
 }
 
-.single-evaluation-result-info:before {
+.displayed-value-info:before {
   content: "> \F15E"; /* .fi-info */
 }
 
-.single-evaluation-result-warn {
+.displayed-value-warn {
   color: #cb4b16;
 }
 
-.single-evaluation-result-warn:before {
+.displayed-value-warn:before {
   content: "> \F101"; /* .fi-alert */
 }
 
-.single-evaluation-result-error {
+.displayed-value-error {
   color: #d30102;
 }
 
-.single-evaluation-result-error:before {
+.displayed-value-error:before {
   content: "> \F175"; /* .fi-minus-circle */
 }
 
-.single-evaluation-result pre {
+.displayed-value pre {
   margin: 0;
   font-family: 'Hack';
 }

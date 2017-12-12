@@ -97,3 +97,32 @@ var obj = {
   key1: 'value1'
 };
 console.log('a', obj, 'c');
+
+//Printing values
+
+console.log(2);
+console.log("abc");
+console.log(/a+/);
+console.log('abcdefgh'.split(''));
+console.log([5, 4, 3, 2, 1]);
+
+var obj = {
+  key1: 'value1',
+  key2: {
+    key21: 'value21',
+    key22: 'value22',
+    key23: 'value23',
+    key24: {
+      key241: 'value241',
+      key242: 'value242',
+      key243: 'value243'
+    }
+  },
+  key3: 'value3',
+  key4: [3, 2, 1]
+};
+console.log(obj);
+
+var nestedArr = [3, 2, 1];
+var arr = ['a', obj, 'c', nestedArr];
+console.log(arr);

@@ -9,27 +9,65 @@ import 'utils/array';
 
 const evaluator = new Evaluator();
 
-const SingleEvaluationResult = ({ value }) => {
-  const { level, datum } = value;
+const isArray = value =>
+  Object.prototype.toString.call(value) === '[object Array]';
 
-  let formattedDataLines;
+const isObject = value =>
+  typeof value === 'object' && value != null;
 
-  if (typeof datum === 'string') {
-    formattedDataLines = datum.split('\n');
-  } else if (Object.prototype.toString.call(datum) === '[object Array]') {
-    formattedDataLines = [`[ ${datum.join(', ')} ]`];
+const isString = value =>
+  typeof value === 'string';
+
+const formatAsShortened = value => {
+  if (isArray(value)) {
+    return `Array(${value.length})`;
+  } else if (isString(value)) {
+    return `"${value}"`;
+  } else if (isObject(value)) {
+    return '{...}';
   } else {
-    formattedDataLines = ['' + JSON.stringify(datum, null, 2)];
+    return value;
   }
-
-  const className = `single-evaluation-result single-evaluation-result-${level}`;
-
-  return (<p class={className}>{formattedDataLines.map(formattedDataLine =>
-      <pre>{formattedDataLine}</pre>
-    )}</p>);
 };
 
-const EvaluationResults = ({ evaluationResults }) => {
+const ShortDisplayedValue = ( { value }) => {
+  let formattedValue;
+
+  if (isString(value)) {
+    formattedValue = value;
+  } else if (isArray(value)) {
+    const displayedElements = value.map(elem => formatAsShortened(elem));
+
+    formattedValue = `(${value.length}) [ ${displayedElements.join(', ')} ]`;
+  } else if (value instanceof RegExp) {
+    formattedValue = value.toString()
+  } else if (isObject(value)) {
+    var displayedProps = Object.keys(value).map(propName => {
+      const displayedPropValue = formatAsShortened(value[propName]);
+
+      return `${propName}: ${displayedPropValue}`;
+    });
+    return `{${displayedProps.join(', ')}}`
+  } else if (value === undefined || value === null) {
+    formattedValue = '' + value;
+  } else {
+    formattedValue = value;
+  }
+
+  return <pre>{formattedValue}</pre>;
+}
+
+const DisplayedValue = ({ value }) => {
+  if (isArray(value)) {
+    //TODO: Display a right triangle button and make displayed value expandable/collapsible, show its contents
+  } else if (isObject(value)) {
+    //TODO: Display a right triangle button and make displayed value expandable/collapsible, show its contents
+  }
+
+  return <ShortDisplayedValue value={value} />;
+};
+
+const Output = ({ evaluationResults }) => {
 
   const scrollToBottom = element => {
     setTimeout(() => {
@@ -38,17 +76,17 @@ const EvaluationResults = ({ evaluationResults }) => {
   };
 
   return (<section
-    class="evaluation-results"
+    class="output"
     updateWhenChanges={evaluationResults.length}
     onupdate={scrollToBottom}
     >
     {evaluationResults.flatMap(result =>
       result.data.map(datum => {
-        const value = {
-          level: result.level,
-          datum: datum
-        };
-        return <SingleEvaluationResult value={value} />;
+        const className = `displayed-value displayed-value-${result.level}`;
+
+        return <p class={className}>
+          <DisplayedValue value={datum} />
+        </p>;
       })
     )}
   </section>);
@@ -69,7 +107,7 @@ const emit = app({
           <Button iconName="trash" tooltip="Erase context" onclick={actions.eraseContext}></Button>
         </section>
       </section>
-      <EvaluationResults evaluationResults={state.evaluationResults} />
+      <Output evaluationResults={state.evaluationResults} />
     </section>),
   actions: {
     evaluate: (state, actions) => {
