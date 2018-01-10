@@ -126,3 +126,5 @@ console.log(obj);
 var nestedArr = [3, 2, 1];
 var arr = ['a', obj, 'c', nestedArr];
 console.log(arr);
+
+[1]

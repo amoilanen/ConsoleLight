@@ -30,11 +30,11 @@ const formatAsShortened = value => {
   }
 };
 
-const ShortDisplayedValue = ( { value }) => {
+const ShortDisplayedValue = ( { value, prefix }) => {
   let formattedValue;
 
   if (isString(value)) {
-    formattedValue = value;
+    formattedValue = formatAsShortened(value);
   } else if (isArray(value)) {
     const displayedElements = value.map(elem => formatAsShortened(elem));
 
@@ -42,29 +42,64 @@ const ShortDisplayedValue = ( { value }) => {
   } else if (value instanceof RegExp) {
     formattedValue = value.toString()
   } else if (isObject(value)) {
-    var displayedProps = Object.keys(value).map(propName => {
+    const displayedProps = Object.keys(value).map(propName => {
       const displayedPropValue = formatAsShortened(value[propName]);
 
       return `${propName}: ${displayedPropValue}`;
     });
-    return `{${displayedProps.join(', ')}}`
+    formattedValue = `{${displayedProps.join(', ')}}`
   } else if (value === undefined || value === null) {
     formattedValue = '' + value;
   } else {
     formattedValue = value;
   }
 
-  return <pre>{formattedValue}</pre>;
+  return (<div class="short-displayed-value">
+    <span>{prefix ? `${prefix}: ` : ''}</span>
+    <pre>{formattedValue}</pre>
+  </div>);
 }
 
-const DisplayedValue = ({ value }) => {
+const ExpandableDisplayedValue = ({ value, prefix }) => {
+
+  const COLLAPSED_ICON = '\u25B6';
+  const EXPANDED_ICON = '\u25BC';
+
+  const state = {
+    isExpanded: true
+  };
+
+  //TODO: Make interactive, can be collapsed/expanded by clicking the short value or icon
+  if (!state.isExpanded) {
+    return (<div class="collapsed-value">
+      <span class="expandable-value-state-icon">{COLLAPSED_ICON}</span>
+      <ShortDisplayedValue value={value} prefix={prefix} />
+    </div>);
+  } else {
+    const displayedProperties = Object.keys(value).map(propertyName => {
+      const propertyValue = value[propertyName];
+
+      return <div class="child-displayed-value">
+        <DisplayedValue value={propertyValue} prefix={propertyName} />
+      </div>;
+    });
+
+    return (<div class="expanded-value">
+      <span class="collapsed-state-icon">{EXPANDED_ICON}</span>
+      <ShortDisplayedValue value={value} prefix={prefix} />
+      {displayedProperties}
+    </div>);
+  }
+}
+
+const DisplayedValue = ({ value, prefix }) => {
   if (isArray(value)) {
-    //TODO: Display a right triangle button and make displayed value expandable/collapsible, show its contents
+    return <ExpandableDisplayedValue value={value} prefix={prefix} />;
   } else if (isObject(value)) {
-    //TODO: Display a right triangle button and make displayed value expandable/collapsible, show its contents
+    return <ExpandableDisplayedValue value={value} prefix={prefix} />;
   }
 
-  return <ShortDisplayedValue value={value} />;
+  return <ShortDisplayedValue value={value} prefix={prefix} />;
 };
 
 const Output = ({ evaluationResults }) => {

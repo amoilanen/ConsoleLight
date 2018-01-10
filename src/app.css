@@ -88,9 +88,23 @@
   content: "> \F175"; /* .fi-minus-circle */
 }
 
+.short-displayed-value {
+  display: inline-block;
+}
+
 .displayed-value pre {
   margin: 0;
   font-family: 'Hack';
+  display: inline-block;
+}
+
+.child-displayed-value {
+  margin-left: 2rem;
+}
+
+.collapsed-state-icon,
+.expanded-state-icon {
+  margin-right: 0.4rem;
 }
 
 /*
