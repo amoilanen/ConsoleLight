@@ -88,7 +88,7 @@
   content: "> \F175"; /* .fi-minus-circle */
 }
 
-.short-displayed-value {
+.displayed-value-one-line-summary {
   display: inline-block;
 }
 
@@ -102,9 +102,18 @@
   margin-left: 2rem;
 }
 
+.collapsed-displayed-value,
+.expanded-displayed-value {
+  cursor: pointer;
+}
+
 .collapsed-displayed-value-icon,
 .expanded-displayed-value-icon {
   margin-right: 0.4rem;
+}
+
+.collapsed-displayed-value-children {
+  display: none;
 }
 
 /*
