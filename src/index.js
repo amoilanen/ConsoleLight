@@ -30,7 +30,7 @@ const formatAsShortened = value => {
   }
 };
 
-const ShortDisplayedValue = ( { value, prefix }) => {
+const OneLineSummaryDisplayedValue = ( { value, prefix }) => {
   let formattedValue;
 
   if (isString(value)) {
@@ -60,7 +60,10 @@ const ShortDisplayedValue = ( { value, prefix }) => {
   </div>);
 }
 
-const ExpandableDisplayedValue = ({ value, prefix }) => {
+const DisplayedValue = ({ value, prefix }) => {
+  if (!isArray(value) && !isObject(value)) {
+    return <OneLineSummaryDisplayedValue value={value} prefix={prefix} />;
+  }
 
   const COLLAPSED_ICON = '\u25B6';
   const EXPANDED_ICON = '\u25BC';
@@ -71,9 +74,9 @@ const ExpandableDisplayedValue = ({ value, prefix }) => {
 
   //TODO: Make interactive, can be collapsed/expanded by clicking the short value or icon
   if (!state.isExpanded) {
-    return (<div class="collapsed-value">
-      <span class="expandable-value-state-icon">{COLLAPSED_ICON}</span>
-      <ShortDisplayedValue value={value} prefix={prefix} />
+    return (<div class="collapsed-displayed-value">
+      <span class="collapsed-displayed-value-icon">{COLLAPSED_ICON}</span>
+      <OneLineSummaryDisplayedValue value={value} prefix={prefix} />
     </div>);
   } else {
     const displayedProperties = Object.keys(value).map(propertyName => {
@@ -84,22 +87,12 @@ const ExpandableDisplayedValue = ({ value, prefix }) => {
       </div>;
     });
 
-    return (<div class="expanded-value">
-      <span class="collapsed-state-icon">{EXPANDED_ICON}</span>
-      <ShortDisplayedValue value={value} prefix={prefix} />
+    return (<div class="expanded-displayed-value">
+      <span class="expanded-displayed-value-icon">{EXPANDED_ICON}</span>
+      <OneLineSummaryDisplayedValue value={value} prefix={prefix} />
       {displayedProperties}
     </div>);
   }
-}
-
-const DisplayedValue = ({ value, prefix }) => {
-  if (isArray(value)) {
-    return <ExpandableDisplayedValue value={value} prefix={prefix} />;
-  } else if (isObject(value)) {
-    return <ExpandableDisplayedValue value={value} prefix={prefix} />;
-  }
-
-  return <ShortDisplayedValue value={value} prefix={prefix} />;
 };
 
 const Output = ({ evaluationResults }) => {
