@@ -140,12 +140,57 @@ const Output = ({ evaluationResults }) => {
   </section>);
 };
 
-const emit = app({
-  state: {
-    codeToEvaluate: '',
-    evaluationResults: []
+const state = {
+  codeToEvaluate: '',
+  evaluationResults: []
+};
+
+const actions = {
+  evaluate: () => (state, actions) => {
+    const { evaluationResults, codeToEvaluate } = state;
+
+    try {
+      const currentEvaluationResult = evaluator.evaluate(codeToEvaluate);
+
+      actions.log({
+        data: [ currentEvaluationResult ]
+      });
+    } catch (evaluationError) {
+      actions.log({
+        level: LogLevel.ERROR,
+        data: [ evaluationError.stack ]
+      });
+    }
   },
-  view: (state, actions) => 
+  clear: () => (state, actions) => {
+    return {
+      evaluationResults: []
+    };
+  },
+  eraseContext: () => {
+    evaluator.eraseContext();
+  },
+  updateCode: event => (state, actions) => {
+    const editor = event.target.editor;
+    const codeToEvaluate = editor.getValue();
+
+    return {
+      codeToEvaluate
+    };
+  },
+  log: ({level = LogLevel.LOG, data}) => (state, actions) => {
+    const { evaluationResults } = state;
+
+    return {
+      evaluationResults: evaluationResults.slice().concat([{
+        level,
+        data
+      }])
+    };
+  }
+};
+
+const view = (state, actions) => 
     (<section class="app-container">
       <section class="editing-area">
         <CodeEditor code={state.codeToEvaluate} onkeyup={actions.updateCode}></CodeEditor>
@@ -156,56 +201,8 @@ const emit = app({
         </section>
       </section>
       <Output evaluationResults={state.evaluationResults} />
-    </section>),
-  actions: {
-    evaluate: (state, actions) => {
-      const { evaluationResults, codeToEvaluate } = state;
+    </section>);
 
-      try {
-        const currentEvaluationResult = evaluator.evaluate(codeToEvaluate);
+const { log } = app(state, actions, view, document.body)
 
-        actions.log({
-          data: [ currentEvaluationResult ]
-        });
-      } catch (evaluationError) {
-        actions.log({
-          level: LogLevel.ERROR,
-          data: [ evaluationError.stack ]
-        });
-      }
-    },
-    clear: (state, actions) => {
-      return {
-        evaluationResults: []
-      };
-    },
-    eraseContext: () => {
-      evaluator.eraseContext();
-    },
-    updateCode: (state, actions, event) => {
-      const editor = event.target.editor;
-      const codeToEvaluate = editor.getValue();
-
-      return {
-        codeToEvaluate
-      };
-    },
-    log: (state, actions, {level = LogLevel.LOG, data}) => {
-      const { evaluationResults } = state;
-
-      return {
-        evaluationResults: evaluationResults.slice().concat([{
-          level,
-          data
-        }])
-      };
-    }
-  },
-  events: {
-    log: (state, actions, {level, data}) => {
-      actions.log({level, data});
-    }
-  }
-});
-
-extendBrowserConsole(emit);
+extendBrowserConsole(log);

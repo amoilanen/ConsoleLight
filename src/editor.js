@@ -21,23 +21,18 @@ const setOptions = (editor, options) =>
   });
 
 const CodeEditor = ({ code, onkeyup }) => {
-
-  let editor;
-
   return (<section class="code-editor">
     <div
       onkeyup={onkeyup}
       oncreate={element => {
-        editor = CodeMirror(node => element.appendChild(node))
+        const editor = CodeMirror(node => element.appendChild(node))
 
         setOptions(editor, Object.assign({}, editorDefaultOptions, {
           'value': code
         }));
         element.querySelector('textarea').editor = editor;
       }}
-      onupdate={element => {
-        editor.setOption('value', code);
-      }}>
+      >
     </div>
   </section>);
 };
