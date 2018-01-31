@@ -12,36 +12,30 @@ class Logger {
     this.logAction = logAction;
   }
 
-  log(...args) {
-    this.logAction({
-      level: LogLevel.LOG,
-      data: args
+  logAtLevel(level, values) {
+    values.forEach(value => {
+      this.logAction({
+        level,
+        value
+      })
     });
-    this.windowConsole.log.apply(window, args);
+    this.windowConsole[level].apply(window, values);
+  }
+
+  log(...args) {
+    this.logAtLevel(LogLevel.LOG, args);
   }
 
   error(...args) {
-    this.logAction({
-      level: LogLevel.ERROR,
-      data: args
-    });
-    this.windowConsole.error.apply(window, args);
+    this.logAtLevel(LogLevel.ERROR, args);
   }
 
   warn(...args) {
-    this.logAction({
-      level: LogLevel.WARN,
-      data: args
-    });
-    this.windowConsole.warn.apply(window, args);
+    this.logAtLevel(LogLevel.WARN, args);
   }
 
   info(...args) {
-    this.logAction({
-      level: LogLevel.INFO,
-      data: args
-    });
-    this.windowConsole.info.apply(window, args);
+    this.logAtLevel(LogLevel.INFO, args);
   }
 }
 

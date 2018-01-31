@@ -23,12 +23,12 @@ const actions = {
       const currentEvaluationResult = evaluator.evaluate(codeToEvaluate);
 
       actions.log({
-        data: [ currentEvaluationResult ]
+        value: currentEvaluationResult
       });
     } catch (evaluationError) {
       actions.log({
         level: LogLevel.ERROR,
-        data: [ evaluationError.stack ]
+        value: evaluationError.stack
       });
     }
   },
@@ -48,13 +48,13 @@ const actions = {
       codeToEvaluate
     };
   },
-  log: ({level = LogLevel.LOG, data}) => (state, actions) => {
+  log: ({level = LogLevel.LOG, value}) => (state, actions) => {
     const { evaluationResults } = state;
 
     return {
       evaluationResults: evaluationResults.slice().concat([{
         level,
-        data
+        value
       }])
     };
   }

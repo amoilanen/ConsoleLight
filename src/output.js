@@ -119,15 +119,13 @@ const Output = ({ evaluationResults }) => {
     updateWhenChanges={evaluationResults.length}
     onupdate={scrollToBottom}
     >
-    {evaluationResults.flatMap(result =>
-      result.data.map(datum => {
-        const className = `displayed-value displayed-value-${result.level}`;
+    {evaluationResults.map(({level, value}) => {
+      const className = `displayed-value displayed-value-${level}`;
 
-        return <p class={className}>
-          <DisplayedValue value={datum} />
-        </p>;
-      })
-    )}
+      return <p class={className}>
+        <DisplayedValue value={value} />
+      </p>;
+    })}
   </section>);
 };
 
