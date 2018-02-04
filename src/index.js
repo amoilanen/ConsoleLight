@@ -5,7 +5,6 @@ import CodeEditor from 'editor';
 import Evaluator from 'evaluator';
 import Button from 'widgets/button';
 import { LogLevel, extendBrowserConsole } from 'logger';
-import 'utils/array';
 import Output from 'output';
 
 const evaluator = new Evaluator();
